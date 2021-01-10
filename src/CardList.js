@@ -3,23 +3,49 @@ import placeholder from './profilepic.png'
 import { data } from "./data.json";
 import PersonsCard from './PersonsCard';
 import "./App.css";
+import ReactDOM from 'react-dom'
+
+
+
 
 const CardList = () => {
+
+	const groups = '014ce6f24fd2bf978b81503a74699095ab5ddf1c'
+
+	const assistant = '3d7fea2b018a23d5f846ba77b088b0b1936c7681'
 
 	const [people, setPeople] = useState(data)
 
 	const [isOpen, setIsOpen] = useState(false)
 
 
-	const openInfoCard = (id) => {
-		console.log("I want to open info card " + id)
+	const openInfoCard = (person) => {
+
+		const modal = (
+						<PersonsCard
+							className={isOpen ? 'open' : 'closed'}
+		            		picture={placeholder}
+		            		name={person.name}
+		            		phone={person.phone[0].value}
+		            		email={person.email[0].value}
+		            		organization={person.org_name}
+		            		assistant={person[assistant]}
+		            		groups={person[groups]}
+		            		location={person.org_id.address}
+	            		/>
+			)
+		ReactDOM.render(modal, document.getElementById("InfoCard"))
 		setIsOpen(!isOpen)
+
 	}
+
 
 	return(
 		<ul>
+		<div id="InfoCard">
+		</div>
 			{people.map(person => (
-				<li className="personTab" key={person.id} onClick={()=>openInfoCard(person.id)}>
+				<li className="personTab" key={person.id} onClick={()=>openInfoCard(person)}>
 					<div className="info">
 						<div className="name">{person.name}</div>
 						<div className="organization">
@@ -39,15 +65,3 @@ const CardList = () => {
 }
 
 export default CardList
-
-						// <PersonsCard
-						// 	className={isOpen ? 'open' : 'closed'}
-		    //         		picture={placeholder}
-		    //         		name={person.name}
-		    //         		phone={person.phone[0].value}
-		    //         		email={person.email[0].value}
-		    //         		organization={person.org_name}
-		    //         		assistant={person['3d7fea2b018a23d5f846ba77b088b0b1936c7681']}
-		    //         		groups={person['014ce6f24fd2bf978b81503a74699095ab5ddf1c']}
-		    //         		location={person.org_id.address}
-	     //        		/>
