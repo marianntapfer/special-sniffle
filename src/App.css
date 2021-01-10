@@ -1,38 +1,75 @@
-.App {
-  text-align: center;
+
+:root {
+  --white: #FFFFFF;
+  --lightgray:#F7F7F7;
+  --mediumgray: #e5e5e5;
+  --gray: #747678;
+  --darkgray: #26292c;
+  --green: #08A742;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+  color: var(--darkgray);
+  line-height: 20px;
+  background: var(--white);
+}
+.app{
+  padding:2rem;
+  max-width: 600px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.mainTitle{
+  font-weight: 600;
+  font-size: 18px;
+  padding: 1rem;
+  border-bottom: 1px solid var(--mediumgray);
+  margin: 0 0 1rem 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.personTab{
+  display: grid;
+  grid-template-columns: auto 35px;
+  border: 1px solid var(--mediumgray);
+  cursor: pointer;
+  padding: 0.75rem 0.75rem 0.75rem 1.2rem;
+  margin: 0.5rem;
+  border-radius: 3px;
+}
+
+.name{
+  font-size: 16px;
+  font-weight: 600;
+}
+.info .organization{
+  font-weight: 300;
+  font-size: 12px;
+  color: #747678;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.orgLogo{
+  height:16px;
+  fill: var(--grayi);
+  padding: 1px 5px 0px 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+ul {
+  list-style-type: none;
 }
+
+.profilePic img{
+  height: 35px;
+  border-radius: 50%;
+}
+
+.show{
+  display: block;
+}
+
+.hide{
+  display: none;
+}
+
+
+

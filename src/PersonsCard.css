@@ -1,0 +1,111 @@
+.infoCard{
+	border: 1px solid var(--mediumgray);
+	width: 400px;
+	border-radius: 2px;
+}
+
+.infoCardBack{
+	/*position: fixed;*/
+	z-index: 1;
+	overflow: auto;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	/*background: var(--lightgray);*/
+	/*display: none;*/
+}
+
+.cardTitle{
+	border-bottom: 1px solid var(--mediumgray);
+	padding: 1rem;
+	font-weight: 600;
+	background: var(--lightgray);
+}
+
+.cardTitle p:after{
+	float: right;
+	content: ' \2715';
+	color: var(--gray);
+	cursor: pointer;
+}
+
+.cardTitle p:focus{
+	cursor: pointer;
+}
+
+.cardTitle p:hover:after{
+	color: var(--darkgray);
+}
+
+.imagebox{
+	border-bottom: 1px solid var(--mediumgray);
+	margin: 1rem;
+}
+
+.imagebox .phone{
+	color: var(--green);
+	font-weight: 600;
+	padding: 0 0 1.5rem 0;
+}
+
+.imagebox div{
+	display: flex;
+	justify-content: space-around;
+	align-items: space-around;
+
+}
+
+.imagebox img{
+	height: 90px;
+	border-radius: 50%;
+	margin: 1rem;
+}
+
+.footer{
+	display: flex;
+	border-top: 1px solid var(--mediumgray);
+	background: var(--lightgray);
+	flex-direction: row-reverse;
+}
+
+.footer button{
+	border: 1px solid var(--mediumgray);
+	border-radius: 3px;
+	padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+	font-size: 16px;
+	font-weight: 600;
+	background: var(--white);
+	margin: 0.5rem;
+}
+
+.footer button:hover{
+	background: var(--mediumgray);
+	cursor: pointer;
+}
+
+.infobox{
+	width: 100%;
+	font-size: 13px;
+	color: var(--gray);
+	margin: 0 0 2rem 0;
+}
+
+.infobox td{
+	padding: 0.6rem;
+
+}
+
+.infobox .value{
+	text-align: left;
+	font-weight: 300;
+}
+
+.infobox .label{
+	text-align: right;
+	font-weight: 600;
+
+}
+
+
+
