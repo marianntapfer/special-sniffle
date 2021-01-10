@@ -4,9 +4,11 @@ import { data } from "./data.json";
 import PersonsCard from './PersonsCard';
 import "./App.css";
 import ReactDOM from 'react-dom'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 
-const DataFromApi = true
+const DataFromApi = false
+// const DataFromApi = true
 
 
 
@@ -54,26 +56,52 @@ const CardList = ({show, close, open}) => {
 
 	}
 
+	const handleOnDragEnd = (result) => {
+		if (!result.destination) return;
+		const items = Array.from(people);
+		const [reorderedItem] = items.splice(result.source.index, 1);
+		items.splice(result.destination.index, 0, reorderedItem);
+		setPeople(items)
+		console.log(result)
+	}
+
 
 	return(
-		<ul>
-			{people.map(person => (
-				<li className="personTab" key={person.id} onClick={()=>openInfoCard(person)}>
-					<div className="info">
-						<div className="name">{person.name}</div>
-						<div className="organization">
-							<svg className="orgLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-								<path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"></path>
-							</svg>
-							<div className="orgName">{person.org_name}</div>
-						</div>
-					</div>
-					<div className="profilePic">
-						<img src={placeholder} alt={person.name} />
-					</div>
-				</li>
-			))}
-		</ul>
+		<DragDropContext onDragEnd= {handleOnDragEnd}>
+			<Droppable droppableId="name">
+				{(provided) => (
+					<ul {...provided.droppableProps} ref={provided.innerRef}>
+						{people.map((person, index) => (
+
+							<Draggable key={person.id} draggableId={person.name} index={index}>
+								{(provided) => (
+									<li className="personTab"  onClick={()=>openInfoCard(person)} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+										<div className="info">
+											<div className="name">{person.name}</div>
+											<div className="organization">
+												<svg className="orgLogo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+													<path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"></path>
+												</svg>
+												<div className="orgName">{person.org_name}</div>
+											</div>
+										</div>
+										<div className="profilePic">
+											<img src={placeholder} alt={person.name} />
+										</div>
+									</li>
+								)}
+							</Draggable>
+
+						))}
+						{provided.placeholder}
+					</ul>
+
+				)}
+
+
+
+			</Droppable>
+		</DragDropContext>
 	);
 }
 
