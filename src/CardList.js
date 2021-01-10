@@ -1,29 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import placeholder from './profilepic.png'
 import { data } from "./data.json";
 import PersonsCard from './PersonsCard';
 import "./App.css";
 import ReactDOM from 'react-dom'
 
+const API_TOKEN='36e5b39f35ac23420d80b2ad266e50c0e5531f98'
+const DataFromApi = false
 
 
 
-const CardList = () => {
+const CardList = ({show, close, open}) => {
 
+	const [people, setPeople] = useState([])
+
+	useEffect ( () => {
+		getPeople();
+	}, []);
+
+	const getPeople = async () => {
+		if(DataFromApi){
+			const response = await fetch(`https://bestcompany.pipedrive.com/api/v1/persons?api_token=${API_TOKEN}`)
+			const ApiData = await response.json();
+			console.log(ApiData)
+			setPeople(ApiData.data)
+		}else{
+			console.log("getting local data")
+			setPeople(data)
+		}
+
+	}
 	const groups = '014ce6f24fd2bf978b81503a74699095ab5ddf1c'
-
 	const assistant = '3d7fea2b018a23d5f846ba77b088b0b1936c7681'
-
-	const [people, setPeople] = useState(data)
-
-	const [isOpen, setIsOpen] = useState(false)
-
 
 	const openInfoCard = (person) => {
 
 		const modal = (
 						<PersonsCard
-							className={isOpen ? 'open' : 'closed'}
 		            		picture={placeholder}
 		            		name={person.name}
 		            		phone={person.phone[0].value}
@@ -32,18 +45,17 @@ const CardList = () => {
 		            		assistant={person[assistant]}
 		            		groups={person[groups]}
 		            		location={person.org_id.address}
+		            		close={close}
 	            		/>
 			)
 		ReactDOM.render(modal, document.getElementById("InfoCard"))
-		setIsOpen(!isOpen)
+		open();
 
 	}
 
 
 	return(
 		<ul>
-		<div id="InfoCard">
-		</div>
 			{people.map(person => (
 				<li className="personTab" key={person.id} onClick={()=>openInfoCard(person)}>
 					<div className="info">

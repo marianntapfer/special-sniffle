@@ -1,14 +1,15 @@
 import React from "react";
 import "./PersonsCard.css"
 
-const PersonsCard = ({picture, name, phone, email, organization, assistant, groups, location}) => {
+const PersonsCard = ({picture, name, phone, email, organization, assistant, groups, location, close}) => {
 	let formatedPhone = phone.replace("(", "+").replace(")", "").replace("-", " ")
 
 	return(
-		<div className="infoCardBack">
-			<div className="infoCard">
+		<div className="infoCardWrapper">
+			<div className="infoContent">
 				<div className="cardTitle">
 					<p>Persons Information</p>
+					<span onClick={close}> &#x2715; </span>
 				</div>
 				<div className="imagebox">
 					<div>
@@ -42,7 +43,7 @@ const PersonsCard = ({picture, name, phone, email, organization, assistant, grou
 					</tbody>
 				</table>
 				<div className="footer">
-					<button>Back</button>
+					<button onClick={close}>Back</button>
 				</div>
 			</div>
 		</div>
