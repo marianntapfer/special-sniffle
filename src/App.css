@@ -13,9 +13,31 @@ body{
   color: var(--darkgray);
   line-height: 20px;
   background: var(--white);
+  -webkit-font-smoothing: antialiased;
 }
 .app{
-  padding:2rem;
+  width: 100%;
+  height: 100%,
+}
+.appHeader{
+  background: var(--darkgray);
+  height:50px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+}
+
+.appHeader img{
+  height: 23px;
+  margin-left: 26px;
+}
+
+
+.peoplesList{
+  padding:1rem 2rem 2rem 2rem;
   max-width: 600px;
 }
 
@@ -26,6 +48,10 @@ body{
   border-bottom: 1px solid var(--mediumgray);
   margin: 0 0 1rem 0;
 }
+
+
+/* CardList */
+
 
 .personTab{
   display: grid;
@@ -70,6 +96,21 @@ ul {
 .hide{
   display: none;
 }
+
+.backgroundCover{
+  background: var(--lightgray);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  opacity: 0.7;
+
+}
+
+
+
+
+
+
 
 
 
