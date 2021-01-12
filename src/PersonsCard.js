@@ -4,6 +4,7 @@ import "./PersonsCard.css"
 const PersonsCard = ({picture, name, phone, email, organization, assistant, groups, location, close}) => {
 	let formatedPhone = phone.replace("(", "+").replace(")", "").replace("-", " ")
 
+
 	return(
 		<div className="infoCardWrapper">
 			<div className="infoContent">

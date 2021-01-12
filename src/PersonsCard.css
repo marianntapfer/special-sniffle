@@ -1,75 +1,79 @@
-.infoCardWrapper{
-	  display: flex;
-  /*flex-direction: column;*/
-  justify-content: space-around;
+.infoCardWrapper {
+	/*display: flex;*/
+	/*flex-direction: column;*/
+	/*justify-content: space-around;*/
+	position: fixed;
+	/*float: left;*/
+	z-index: 90;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 }
 
-.infoContent{
-	position: sticky;
+.infoContent {
+/*	position: sticky;
 	position: -webkit-sticky;
-	top: 10vh;
+	top: 10vh;*/
 	border: 1px solid var(--mediumgray);
 	width: 390px;
 	border-radius: 2px;
 	z-index: 10;
-	position: absolute;
-	background:  var(--white);
+	/*position: absolute;*/
+	background: var(--white);
 }
 
-.cardTitle{
+.cardTitle {
 	border-bottom: 1px solid var(--mediumgray);
 	padding: 1rem;
 	font-weight: 600;
 	background: var(--lightgray);
 	display: flex;
-  	align-items: center;
-  	justify-content: space-between;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.cardTitle span{
+.cardTitle span {
 	float: right;
 	color: var(--gray);
 	cursor: pointer;
 	margin: auto 0 auto 0;
-
 }
 
-.cardTitle span:hover{
+.cardTitle span:hover {
 	color: var(--darkgray);
 }
 
-.imagebox{
+.imagebox {
 	border-bottom: 1px solid var(--mediumgray);
 	margin: 1rem;
 }
 
-.imagebox .phone{
+.imagebox .phone {
 	color: var(--green);
 	font-weight: 600;
 	padding: 0 0 1.5rem 0;
 }
 
-.imagebox div{
+.imagebox div {
 	display: flex;
 	justify-content: space-around;
 	align-items: space-around;
-
 }
 
-.imagebox img{
+.imagebox img {
 	height: 90px;
 	border-radius: 50%;
 	margin: 1rem;
 }
 
-.footer{
+.footer {
 	display: flex;
 	border-top: 1px solid var(--mediumgray);
 	background: var(--lightgray);
 	flex-direction: row-reverse;
 }
 
-.footer button{
+.footer button {
 	border: 1px solid var(--mediumgray);
 	border-radius: 3px;
 	padding: 0.5rem 1.5rem 0.5rem 1.5rem;
@@ -77,35 +81,30 @@
 	font-weight: 600;
 	background: var(--white);
 	margin: 0.5rem;
-}
-
-.footer button:hover{
-	background: var(--mediumgray);
 	cursor: pointer;
 }
 
-.infobox{
+.footer button:hover {
+	background: var(--mediumgray);
+}
+
+.infobox {
 	width: 100%;
 	font-size: 13px;
 	color: var(--gray);
 	margin: 0 0 2rem 0;
 }
 
-.infobox td{
+.infobox td {
 	padding: 0.6rem;
-
 }
 
-.infobox .value{
+.infobox .value {
 	text-align: left;
 	font-weight: 300;
 }
 
-.infobox .label{
+.infobox .label {
 	text-align: right;
 	font-weight: 600;
-
 }
-
-
-

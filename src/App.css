@@ -27,7 +27,7 @@ body{
   top: 0;
   display: flex;
   align-items: center;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .appHeader img{
@@ -38,7 +38,7 @@ body{
 
 .peoplesList{
   padding:1rem 2rem 2rem 2rem;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .mainTitle{
@@ -100,11 +100,27 @@ ul {
 
 .backgroundCover{
   background: var(--lightgray);
-  height: 100%;
+  height: 100vh;
   width: 100%;
   position: fixed;
   opacity: 0.7;
+  overflow-y: auto;
 
+}
+.sortBtn{
+  border: 1px solid var(--mediumgray);
+  border-radius: 3px;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  font-size: 16px;
+  font-weight: 600;
+  background: var(--white);
+  margin: 0.5rem;
+  cursor: pointer;
+  width: 250px;
+}
+
+.sortBtn:hover {
+  background: var(--mediumgray);
 }
 
 
