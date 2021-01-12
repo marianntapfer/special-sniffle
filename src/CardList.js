@@ -6,16 +6,26 @@ import "./App.css";
 import ReactDOM from 'react-dom'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+const API_TOKEN= ""
+// const DataFromApi = false
+const DataFromApi = true
 
-const DataFromApi = false
-// const DataFromApi = true
+const groups = '014ce6f24fd2bf978b81503a74699095ab5ddf1c'
+const assistant = '3d7fea2b018a23d5f846ba77b088b0b1936c7681'
+const order = '087a4f4645d3851a1808b15f1cba6555b87d392c'
 
 
+const chooseImg = (person) => {
+	let picture = placeholder
+	if(person.picture_id) picture = person.picture_id.pictures[128]
+	return (<img src={picture} alt={person.name} />)
+}
 
 
 const CardList = ({show, close, open}) => {
 
-	const [people, setPeople] = useState([])
+	const [people, setPeople] = useState([]);
+	const [searchTerm, setSearchTerm] = useState('');
 
 	useEffect ( () => {
 		getPeople();
@@ -27,12 +37,13 @@ const CardList = ({show, close, open}) => {
 			const ApiData = await response.json();
 			console.log(ApiData)
 			setPeople(ApiData.data)
+
 		}else{
 			console.log("getting local data")
 			setPeople(data)
 		}
-
 	}
+
 
 	const sortAbcString = (key) => {
 		const sortedPeople = [...people].sort( function (a, b) {
@@ -50,17 +61,12 @@ const CardList = ({show, close, open}) => {
 		setPeople(sortedPeople)
 	}
 
-	const groups = '014ce6f24fd2bf978b81503a74699095ab5ddf1c'
-	const assistant = '3d7fea2b018a23d5f846ba77b088b0b1936c7681'
-
-
 	const openInfoCard = (person) => {
 
 	let picture = placeholder
 	if(person.picture_id) picture = person.picture_id.pictures[128]
 
-		const modal = (
-						<PersonsCard
+		const modal = (<PersonsCard
 		            		picture={picture}
 		            		name={person.name}
 		            		phone={person.phone[0].value}
@@ -70,13 +76,11 @@ const CardList = ({show, close, open}) => {
 		            		groups={person[groups]}
 		            		location={person.org_id.address}
 		            		close={close}
-	            		/>
-			)
+	            		/>)
 		ReactDOM.render(modal, document.getElementById("InfoCard"))
 		open();
 
 	}
-
 	const handleOnDragEnd = (result) => {
 		if (!result.destination) return;
 		const items = Array.from(people);
@@ -93,18 +97,23 @@ const CardList = ({show, close, open}) => {
 		console.log(people)
 	}
 
-
-
 	return(
 		<div className="listContainer">
 			<button className="sortBtn" onClick={() => sortAbcString('first_name')}>sort by firstname</button>
 			<button className="sortBtn" onClick={() => sortAbcString('last_name')}>sort by lastname</button>
 			<button className="sortBtn" onClick={() => sortAbcString('org_name')}>sort by organization</button>
+			<input type="text" placeholder="Search" onChange={(event) => setSearchTerm(event.target.value)}/>
 			<DragDropContext onDragEnd= {handleOnDragEnd}>
 				<Droppable droppableId="name">
 					{(provided) => (
 						<ul {...provided.droppableProps} ref={provided.innerRef}>
-							{people.map((person, index) => (
+							{people.filter((val)=>{
+								if (searchTerm === ""){
+									return val
+								}else if (val.name.toLowerCase().includes(searchTerm.toLowerCase()) || val.org_name.toLowerCase().includes(searchTerm.toLowerCase())){
+									return val
+								}
+							}).map((person, index) => (
 
 								<Draggable key={person.id} draggableId={person.name} index={index}>
 									{(provided) => (
@@ -119,20 +128,15 @@ const CardList = ({show, close, open}) => {
 												</div>
 											</div>
 											<div className="profilePic">
-												<img src={placeholder} alt={person.name} />
+												{chooseImg(person)}
 											</div>
 										</li>
 									)}
 								</Draggable>
-
 							))}
 							{provided.placeholder}
 						</ul>
-
 					)}
-
-
-
 				</Droppable>
 			</DragDropContext>
 		</div>
