@@ -1,7 +1,7 @@
 import React from "react";
 import "./PersonsCard.css"
 
-const PersonsCard = ({picture, name, phone, email, organization, assistant, groups, location, close}) => {
+const PersonsCard = ({id, picture, name, phone, email, organization, assistant, groups, location, close, deletePerson}) => {
 	let formatedPhone = phone.replace("(", "+").replace(")", "").replace("-", " ")
 
 
@@ -45,6 +45,8 @@ const PersonsCard = ({picture, name, phone, email, organization, assistant, grou
 				</table>
 				<div className="footer">
 					<button onClick={close}>Back</button>
+					<button onClick={() => deletePerson(id)}>Delete</button>
+
 				</div>
 			</div>
 		</div>
