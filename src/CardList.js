@@ -22,7 +22,6 @@ const chooseImg = (person) => {
 const CardList = ({show, close, open}) => {
 
 	const [people, setPeople] = useState([]);
-	const [peopleInDB, setPeopleInDB] = useState([])
 	const [searchTerm, setSearchTerm] = useState('');
 
 	useEffect ( () => {
@@ -32,7 +31,7 @@ const CardList = ({show, close, open}) => {
 	const getPeople = async () => {
 		const response = await fetch(`https://bestcompany.pipedrive.com/api/v1/persons:(id,name,first_name,last_name,org_name,org_id,picture_id,phone,email,${groups},${assistant},${order})?api_token=${API_TOKEN}`)
 		const ApiData = await response.json();
-		console.log(ApiData)
+		// console.log(ApiData)
 
 		const sortedPeople = ApiData.data.sort( function (a, b) {
 			let valueA = a[`${order}`]
@@ -43,7 +42,6 @@ const CardList = ({show, close, open}) => {
 		sortedPeople.map((obj, index) => {
 			return obj.order=index+1
 		})
-		setPeopleInDB(sortedPeople)
 		setPeople(sortedPeople)
 	}
 
@@ -59,26 +57,6 @@ const CardList = ({show, close, open}) => {
 			getPeople()
 	}
 
-
-
-	const sortAbcString = (key) => {
-		const sortedPeople = [...people].sort( function (a, b) {
-			const valueA = a[key].toUpperCase();
-			const valueB = b[key].toUpperCase();
-			if (valueA < valueB) {
-				return -1;
-			}
-			if (valueA > valueB) {
-				return 1;
-			}
-
-			return 0;
-		})
-		sortedPeople.map((obj, index) => {
-			return obj.order=index+1
-		})
-		setPeople(sortedPeople)
-	}
 
 	const openInfoCard = (person) => {
 
