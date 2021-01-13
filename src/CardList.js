@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import placeholder from './profilepic.png'
-import { data } from "./data.json";
+import placeholder from './placeholder.png'
+// import { data } from "./data.json";
 import PersonsCard from './PersonsCard';
+import PersonAddForm from './PersonAddForm'
 import "./App.css";
 import ReactDOM from 'react-dom'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-const API_TOKEN= ""
-// const DataFromApi = false
-const DataFromApi = true
+
 
 const groups = '014ce6f24fd2bf978b81503a74699095ab5ddf1c'
 const assistant = '3d7fea2b018a23d5f846ba77b088b0b1936c7681'
@@ -25,6 +24,7 @@ const chooseImg = (person) => {
 const CardList = ({show, close, open}) => {
 
 	const [people, setPeople] = useState([]);
+	const [peopleInDB, setPeopleInDB] = useState([])
 	const [searchTerm, setSearchTerm] = useState('');
 
 	useEffect ( () => {
@@ -32,16 +32,81 @@ const CardList = ({show, close, open}) => {
 	}, []);
 
 	const getPeople = async () => {
-		if(DataFromApi){
-			const response = await fetch(`https://bestcompany.pipedrive.com/api/v1/persons?api_token=${API_TOKEN}`)
+		const response = await fetch(`https://bestcompany.pipedrive.com/api/v1/persons:(id,name,first_name,last_name,org_name,org_id,picture_id,phone,email,${groups},${assistant},${order})?api_token=${API_TOKEN}`)
+		const ApiData = await response.json();
+		console.log(ApiData)
+
+		const sortedPeople = ApiData.data.sort( function (a, b) {
+			let valueA = a[`${order}`]
+			let valueB = b[`${order}`]
+			return valueA - valueB
+		})
+
+		//kui järjekord on juba olemas, siis kas on vaja?????
+		sortedPeople.map((obj, index) => {
+			return obj.order=index+1
+		})
+		setPeopleInDB(sortedPeople)
+		setPeople(sortedPeople)
+	}
+
+	// const putPerson = async (personsId, data) => {
+	// 	console.log("mitte midagi")
+
+	// 	// const response = await fetch(`https://bestcompany.pipedrive.com/api/v1/persons/${personsId}?api_token=${API_TOKEN}`)
+	// 	// const ApiData = await response.json();
+	// 	// console.log(ApiData)
+	// 	// setPeople(ApiData.data)
+	// }
+
+	const putOrder = () => {
+
+		// pean saatma ainult selle mis muutus????
+		//selleks võrdeln inimese id-d tema order-iga kui pole mõlemas arrys sama siis saadan apisse
+
+		// orderedPeople.forEach(person =>{
+		// 		console.log(person.id, `{"${order}": ${person.order}}`)
+
+		// 		const response = fetch(`https://bestcompany.pipedrive.com/api/v1/persons/${person.id}?api_token=${API_TOKEN}`, {
+		// 			method: 'PUT',
+		// 			body: JSON.stringify({"087a4f4645d3851a1808b15f1cba6555b87d392c": person.order}),
+		// 			headers:{
+		// 			'Content-Type': 'application/json'
+		// 			}
+		// 		})
+		// 	})
+
+		for(const person of people){
+			console.log(person.id, `{"${order}": ${person.order}}`)
+
+			// const response = await fetch(`https://bestcompany.pipedrive.com/api/v1/persons/${person.id}?api_token=${API_TOKEN}`, {
+			// 	method: 'PUT',
+			// 	body: JSON.stringify({"087a4f4645d3851a1808b15f1cba6555b87d392c": person.order}),
+			// 	headers:{
+			// 	'Content-Type': 'application/json'
+			// 	}
+			// })
+			// const ApiData = await response.json();
+			// console.log(ApiData)
+		}
+
+	}
+
+	// kustutamis hetkel peaks ka modaali sulgema ja lehe uuesti laadima
+
+	const deletePerson = async (id) => {
+		console.log(id, `https://bestcompany.pipedrive.com/api/v1/persons/${id}?api_token=${API_TOKEN}`)
+			const response = await fetch(`https://bestcompany.pipedrive.com/api/v1/persons/${id}?api_token=${API_TOKEN}`, {
+				method: 'DELETE'
+			})
 			const ApiData = await response.json();
 			console.log(ApiData)
-			setPeople(ApiData.data)
+			close()
+			getPeople()
+	}
 
-		}else{
-			console.log("getting local data")
-			setPeople(data)
-		}
+	const addPerson = async () => {
+		console.log("adding person....")
 	}
 
 
@@ -58,6 +123,9 @@ const CardList = ({show, close, open}) => {
 
 			return 0;
 		})
+		sortedPeople.map((obj, index) => {
+			return obj.order=index+1
+		})
 		setPeople(sortedPeople)
 	}
 
@@ -67,15 +135,29 @@ const CardList = ({show, close, open}) => {
 	if(person.picture_id) picture = person.picture_id.pictures[128]
 
 		const modal = (<PersonsCard
+							id={person.id}
 		            		picture={picture}
 		            		name={person.name}
-		            		phone={person.phone[0].value}
-		            		email={person.email[0].value}
-		            		organization={person.org_name}
-		            		assistant={person[assistant]}
+		            		phone={person.phone ? person.phone[0].value : ""}
+		            		email={person.email ? person.email[0].value : "no email entered"}
+		            		organization={person.org_name ? person.org_name :""}
+		            		assistant={person[assistant] ? person[assistant]:""}
 		            		groups={person[groups]}
-		            		location={person.org_id.address}
+		            		location={person.org_id ? person.org_id.address : ""}
 		            		close={close}
+		            		deletePerson={deletePerson}
+	            		/>)
+		ReactDOM.render(modal, document.getElementById("InfoCard"))
+		open();
+
+	}
+
+	const openAddForm = () => {
+
+		const modal = (<PersonAddForm
+		            		picture={placeholder}
+		            		close={close}
+		            		addPerson={addPerson}
 	            		/>)
 		ReactDOM.render(modal, document.getElementById("InfoCard"))
 		open();
@@ -87,22 +169,24 @@ const CardList = ({show, close, open}) => {
 		const [reorderedItem] = items.splice(result.source.index, 1);
 		items.splice(result.destination.index, 0, reorderedItem);
 		items.map((obj, index) => {
-			return obj.order=index
+			return obj.order=index+1
 		})
 		setPeople(items)
-		for(const i of items){
-			console.log("id:"+i.id, "order:"+i.order, i.name)
-		}
-		console.log(items)
-		console.log(people)
+		// putOrder(items)
+		// for(const i of items){
+		// 	console.log("id:"+i.id, "order:"+i.order, i.name)
+		// }
+		// console.log(items)
+		// console.log(people)
 	}
 
+			// <button className="sortBtn" onClick={() => sortAbcString('name')}>sort by name</button>
+			// <button className="sortBtn" onClick={() => sortAbcString('org_name')}>sort by organization</button>
+			// <button className="sortBtn" onClick={() => putOrder(people)}>salvesta järjekord</button>
 	return(
 		<div className="listContainer">
-			<button className="sortBtn" onClick={() => sortAbcString('first_name')}>sort by firstname</button>
-			<button className="sortBtn" onClick={() => sortAbcString('last_name')}>sort by lastname</button>
-			<button className="sortBtn" onClick={() => sortAbcString('org_name')}>sort by organization</button>
 			<input type="text" placeholder="Search" onChange={(event) => setSearchTerm(event.target.value)}/>
+			<button className="sortBtn" onClick={openAddForm}>add person</button>
 			<DragDropContext onDragEnd= {handleOnDragEnd}>
 				<Droppable droppableId="name">
 					{(provided) => (
@@ -113,6 +197,7 @@ const CardList = ({show, close, open}) => {
 								}else if (val.name.toLowerCase().includes(searchTerm.toLowerCase()) || val.org_name.toLowerCase().includes(searchTerm.toLowerCase())){
 									return val
 								}
+								return false
 							}).map((person, index) => (
 
 								<Draggable key={person.id} draggableId={person.name} index={index}>

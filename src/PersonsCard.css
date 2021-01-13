@@ -100,3 +100,30 @@
 	text-align: right;
 	font-weight: 600;
 }
+
+.databox {
+	width: 100%;
+	font-size: 13px;
+	color: var(--gray);
+	margin: 0 0 2rem 0;
+}
+
+.databox td {
+	padding: 0.6rem;
+}
+
+.databox .value {
+	text-align: left;
+	font-weight: 300;
+}
+
+.databox .label {
+	text-align: right;
+	font-weight: 600;
+	padding-left: 2rem;
+}
+
+.databox input{
+	width: 70%;
+	margin:0;
+}
